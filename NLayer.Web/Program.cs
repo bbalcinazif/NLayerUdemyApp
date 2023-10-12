@@ -1,8 +1,10 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using NLayer.Repository;
 using NLayer.Service.Mapping;
+using NLayer.Service.Validations;
 using NLayer.WEB.Modules;
 using System.Reflection;
 
@@ -15,10 +17,9 @@ namespace NLayer.Web
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<ProductDtoValidatior>());
             builder.Services.AddAutoMapper(typeof(MapProfile));
-            builder.Host.UseServiceProviderFactory(
-            new AutofacServiceProviderFactory());
+           
             builder.Services.AddDbContext<AppDbContext>(x =>
             {
                 x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"), option =>
@@ -26,8 +27,13 @@ namespace NLayer.Web
                     option.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
                 });
 
-                x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"));
+                
             });
+            builder.Services.AddScoped(typeof(NotFoundFilter<>));
+
+
+            builder.Host.UseServiceProviderFactory
+                    (new AutofacServiceProviderFactory());
             builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder => containerBuilder.RegisterModule(new RepoServiceModule()));
 
             var app = builder.Build();
