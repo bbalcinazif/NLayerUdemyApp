@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NLayer.Core.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NLayer.Repository.Repositories
 {
@@ -14,8 +9,8 @@ namespace NLayer.Repository.Repositories
         private readonly DbSet<T> _dbSet;
         public GenericRepository(AppDbContext context)
         {
-            _context= context;
-            _dbSet=context.Set<T>();
+            _context = context;
+            _dbSet = context.Set<T>();
         }
         public async Task AddAsync(T entity)
         {
@@ -39,7 +34,7 @@ namespace NLayer.Repository.Repositories
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await  _dbSet.FindAsync(id);
+            return await _dbSet.FindAsync(id);
         }
 
         public void Remove(T entity)

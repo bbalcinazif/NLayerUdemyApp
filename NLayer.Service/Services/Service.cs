@@ -3,12 +3,7 @@ using NLayer.Core.Repositories;
 using NLayer.Core.Services;
 using NLayer.Core.UnitOfWorks;
 using NLayer.Service.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NLayer.Service.Services
 {
@@ -24,9 +19,9 @@ namespace NLayer.Service.Services
             _unitOfWork = unitOfWork;
         }
 
-        
 
-        
+
+
         public async Task<T> AddAsync(T entity)
         {
             await _repository.AddAsync(entity);
@@ -36,7 +31,7 @@ namespace NLayer.Service.Services
 
         public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
         {
-            await _repository.AddRangeAsync(entities);  
+            await _repository.AddRangeAsync(entities);
             await _unitOfWork.CommitAsync();
             return entities;
         }
@@ -48,15 +43,15 @@ namespace NLayer.Service.Services
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-           return await _repository.GetAll().ToListAsync();
+            return await _repository.GetAll().ToListAsync();
         }
 
         public async Task<T> GetByIdAsync(int id)
         {
-            var hasProduct=await  _repository.GetByIdAsync(id);
+            var hasProduct = await _repository.GetByIdAsync(id);
             if (hasProduct == null)
             {
-                throw new NotFoundException($"{typeof(T).Name}({id}) not found" );
+                throw new NotFoundException($"{typeof(T).Name}({id}) not found");
             }
             return hasProduct;
         }
@@ -75,7 +70,7 @@ namespace NLayer.Service.Services
 
         public async Task UpdateAsync(T entity)
         {
-           _repository.Update(entity);
+            _repository.Update(entity);
             await _unitOfWork.CommitAsync();
         }
 
