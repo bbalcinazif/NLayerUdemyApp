@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using NLayer.Repository;
 using NLayer.Service.Mapping;
 using NLayer.Service.Validations;
+using NLayer.Web.Services;
 using NLayer.WEB.Modules;
 using System.Reflection;
 
@@ -29,6 +30,15 @@ namespace NLayer.Web
 
                 
             });
+            builder.Services.AddHttpClient<ProductApiService>(opt =>
+            {
+                opt.BaseAddress = new Uri(builder.Configuration["BaseUrl"]);
+            });
+            builder.Services.AddHttpClient<CategoryApiService>(opt =>
+            {
+                opt.BaseAddress = new Uri(builder.Configuration["BaseUrl"]);
+            });
+
             builder.Services.AddScoped(typeof(NotFoundFilter<>));
 
 
