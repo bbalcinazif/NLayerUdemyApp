@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using NLayer.Caching;
 using NLayer.Core.Repositories;
 using NLayer.Core.Services;
 using NLayer.Core.UnitOfWorks;
@@ -10,9 +9,9 @@ using NLayer.Service.Mapping;
 using NLayer.Service.Services;
 using System.Reflection;
 using Module = Autofac.Module;
-namespace NLayer.API.Modules
+namespace NLayer.WEB.Modules
 {
-    public class RepoServiceModule:Module
+    public class RepoServiceModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -25,7 +24,7 @@ namespace NLayer.API.Modules
 
 
 
-            var apiAssembly =Assembly.GetExecutingAssembly();
+            var apiAssembly = Assembly.GetExecutingAssembly();
 
             var repoAssembly = Assembly.GetAssembly(typeof(AppDbContext));
 
@@ -38,7 +37,7 @@ namespace NLayer.API.Modules
 
             builder.RegisterAssemblyTypes(apiAssembly, serviceAssembly, repoAssembly).Where(x => x.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerLifetimeScope();
 
-           // builder.RegisterType<ProductServiceWithCaching>().As<IProductService>();
+
         }
     }
 }
